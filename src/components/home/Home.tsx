@@ -62,49 +62,49 @@ const Home = () => {
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                         {/* Repeatable Card */}
                         <div className="min-w-0 p-4 bg-white rounded-lg border border-gray-200 hover:border-blue-500 transition duration-300 transform hover:scale-105">
-                            <h4 className="mb-2 font-semibold text-gray-600 text-lg">
+                            <h4 className="mb-2 font-semibold text-size-md text-lg">
                                 <span className="p-3 mr-4 text-blue-500 bg-blue-100 rounded-full">
                                     <i className="fas fa-shield-alt text-blue-500 text-3xl"></i>
                                 </span>
                                 Secure Transactions
                             </h4>
-                            <p className="text-gray-600 text-normal">
+                            <p className="text-size-md text-normal">
                                 Your transactions are secured using the latest encryption technologies to protect your financial data.
                             </p>
                         </div>
 
                         <div className="min-w-0 p-4 bg-white rounded-lg border border-gray-200 hover:border-blue-500 transition duration-300 transform hover:scale-105">
-                            <h4 className="mb-2 font-semibold text-gray-600 text-lg">
+                            <h4 className="mb-2 font-semibold text-size-md text-lg">
                                 <span className="p-3 mr-4 text-green-500 bg-green-100 rounded-full">
                                     <i className="fas fa-history text-green-500 text-3xl mb-4"></i>
                                 </span>
                                 Easy Fund Management
                             </h4>
-                            <p className="text-gray-600 text-normal">
+                            <p className="text-size-md text-normal">
                                 Manage your funds with ease using our intuitive and user-friendly banking interface.
                             </p>
                         </div>
 
                         <div className="min-w-0 p-4 bg-white rounded-lg border border-gray-200 hover:border-blue-500 transition duration-300 transform hover:scale-105">
-                            <h4 className="mb-2 font-semibold text-gray-600 text-lg">
+                            <h4 className="mb-2 font-semibold text-size-md text-lg">
                                 <span className="p-3 mr-4 text-orange-500 bg-orange-100 rounded-full">
                                     <i className="fas fa-users text-orange-500 text-3xl mb-4"></i>
                                 </span>
                                 Multi-User Support
                             </h4>
-                            <p className="text-gray-600 text-normal">
+                            <p className="text-size-md text-normal">
                                 Our banking portal supports multiple users, making it perfect for families and businesses.
                             </p>
                         </div>
 
                         <div className="min-w-0 p-4 bg-white rounded-lg border border-gray-200 hover:border-blue-500 transition duration-300 transform hover:scale-105">
-                            <h4 className="mb-2 font-semibold text-gray-600 text-lg">
+                            <h4 className="mb-2 font-semibold text-size-md text-lg">
                                 <span className="p-3 mr-4 text-teal-500 bg-teal-100 rounded-full">
                                     <i className="fas fa-history text-teal-500 text-3xl mb-4"></i>
                                 </span>
                                 Transaction History
                             </h4>
-                            <p className="text-gray-600 text-normal">
+                            <p className="text-size-md text-normal">
                                 Keep track of your transaction history with detailed records and real-time updates.
                             </p>
                         </div>
@@ -115,7 +115,7 @@ const Home = () => {
             {/* Footer */}
             <footer className="bg-black text-white py-4 mt-8 m-[-0.5rem]">
                 <div className="container mx-auto text-center">
-                    <p>&copy; 2023 OneStopBank. All rights reserved.</p>
+                    <p>&copy; 2025 OneStopBank. All rights reserved.</p>
                     {/* <div className="mt-4 flex flex-wrap p-3 justify-center items-center rowgap">
                         <span className="text-white font-bold text-xl mr-2">Star on Github</span>
                         <a href="https://github.com/daniela-castillo-giron/baking-portal-ui" target="_blank"

@@ -75,6 +75,10 @@ h1 {
     letter-spacing: 2px;
 }
 
+.text-size-md {
+    font-size: 1.25rem;
+}
+
 .text-gray-600 {
     font-size: 1.5rem;
 }
