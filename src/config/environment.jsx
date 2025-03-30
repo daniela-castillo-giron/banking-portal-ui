@@ -1,8 +1,7 @@
 const environment = {
-    production: process.env.NODE_ENV || 'development',
-    apiUrl: process.env.REACT_APP_API_URL || 'http://localhost:8180/api',
-    tokenName: process.env.REACT_APP_TOKEN_NAME || 'authToken',
-    origin: process.env.REACT_APP_ORIGIN || 'http://localhost:4200',
+    apiUrl: import.meta.env.VITE_API_URL,
+    tokenName: import.meta.env.VITE_TOKEN_NAME,
+    origin: import.meta.env.VITE_ORIGIN,
 };
 
 export default environment;
