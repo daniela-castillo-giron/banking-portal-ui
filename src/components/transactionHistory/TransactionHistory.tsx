@@ -174,7 +174,7 @@ const TransactionHistory = () => {
                             </>
                         ) : (
                             <div className="text-center mt-4">
-                                <p className="text-3xl font-semibold text-gray-900">No Transaction History</p>
+                                <p className="mb-4 text-2xl font-semibold text-gray-900">No Transaction History</p>
                             </div>
                         )}
                     </div>

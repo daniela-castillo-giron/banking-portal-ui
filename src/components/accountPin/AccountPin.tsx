@@ -22,7 +22,6 @@ const changeSchema = yup.object().shape({
 
 const AccountPin = () => {
     const { show, hide } = useLoader();
-    const [loading, setLoading] = useState(true);
     const [showGeneratePINForm, setShowGeneratePINForm] = useState(true);
     const navigate = useNavigate();
 
@@ -43,8 +42,7 @@ const AccountPin = () => {
                     setShowGeneratePINForm(false);
                 }
             })
-            .catch((error) => console.error('Error checking PIN status:', error))
-            .finally(() => setLoading(false));
+            .catch((error) => console.error('Error checking PIN status:', error));
     }, []);
 
     const onGenerateSubmit = async (data) => {
@@ -74,14 +72,6 @@ const AccountPin = () => {
             hide();
         }
     };
-
-    if (loading) {
-        return (
-            <div className="flex items-center justify-center h-full">
-                <div className="loader">Loading</div>
-            </div>
-        );
-    }
 
     return (
         <div className="flex justify-center items-center coverparentspace">
