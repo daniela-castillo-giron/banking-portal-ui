@@ -26,5 +26,8 @@ dist-ssr
 # Environment variables
 .env.*
 
-# Vite
+# Vite files
 .vite/*
+
+# Firebase files
+.firebase/*

@@ -47,7 +47,7 @@ const Home = () => {
                         {/* Right Side */}
                         <div className="right-panel">
                             <img
-                                src="../public/assets/dashboard.png"
+                                src="/assets/dashboard.png"
                                 alt="Dashboard Screenshot"
                                 className="w-full rounded-lg border border-gray-200"
                             />
