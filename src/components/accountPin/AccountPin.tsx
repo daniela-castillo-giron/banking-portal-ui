@@ -25,7 +25,6 @@ const AccountPin = () => {
     const [showGeneratePINForm, setShowGeneratePINForm] = useState(true);
     const navigate = useNavigate();
 
-    // Dynamic form hook based on mode
     const {
         register,
         handleSubmit,
@@ -84,48 +83,61 @@ const AccountPin = () => {
                     ⚠️ For your security, your PIN must be kept confidential and should not be shared with anyone. Never reuse a PIN you've used before.
                 </div>
 
-                <h2 className="text-3xl font-semibold mb-6 text-center">
-                    {showGeneratePINForm ? 'Generate PIN' : 'Change PIN'}
-                </h2>
+                <h2 className="text-3xl font-semibold mb-6 text-center">Account PIN</h2>
 
                 <form
                     onSubmit={handleSubmit(showGeneratePINForm ? onGenerateSubmit : onChangeSubmit)}
                     className="space-y-4"
                 >
-                    {!showGeneratePINForm && (
-                        <div>
-                            <label className="block text-sm font-bold mb-2">Current PIN:</label>
-                            <input
-                                type="password"
-                                {...register('oldPin')}
-                                placeholder="Enter the old PIN"
-                                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-indigo-500"
-                            />
-                            {errors.oldPin && <p className="text-red-500 text-sm mt-1">{errors.oldPin.message}</p>}
+                    {showGeneratePINForm ? (
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label className="block text-sm font-bold mb-2">New PIN:</label>
+                                <input
+                                    type="password"
+                                    {...register('newPin')}
+                                    placeholder="Enter the new PIN"
+                                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-indigo-500"
+                                />
+                                {errors.newPin && <p className="text-red-500 text-sm mt-1">{errors.newPin.message}</p>}
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-bold mb-2">Confirm PIN:</label>
+                                <input
+                                    type="password"
+                                    {...register('confirmPin')}
+                                    placeholder="Confirm the new PIN"
+                                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-indigo-500"
+                                />
+                                {errors.confirmPin && (
+                                    <p className="text-red-500 text-sm mt-1">{errors.confirmPin.message}</p>
+                                )}
+                            </div>
                         </div>
-                    )}
+                    ) : (
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label className="block text-sm font-bold mb-2">Current PIN:</label>
+                                <input
+                                    type="password"
+                                    {...register('oldPin')}
+                                    placeholder="Enter your current PIN"
+                                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-indigo-500"
+                                />
+                                {errors.oldPin && <p className="text-red-500 text-sm mt-1">{errors.oldPin.message}</p>}
+                            </div>
 
-                    <div>
-                        <label className="block text-sm font-bold mb-2">New PIN:</label>
-                        <input
-                            type="password"
-                            {...register('newPin')}
-                            placeholder="Enter the new PIN"
-                            className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-indigo-500"
-                        />
-                        {errors.newPin && <p className="text-red-500 text-sm mt-1">{errors.newPin.message}</p>}
-                    </div>
-
-                    {showGeneratePINForm && (
-                        <div>
-                            <label className="block text-sm font-bold mb-2">Confirm PIN:</label>
-                            <input
-                                type="password"
-                                {...register('confirmPin')}
-                                placeholder="Confirm the new PIN"
-                                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-indigo-500"
-                            />
-                            {errors.confirmPin && <p className="text-red-500 text-sm mt-1">{errors.confirmPin.message}</p>}
+                            <div>
+                                <label className="block text-sm font-bold mb-2">New PIN:</label>
+                                <input
+                                    type="password"
+                                    {...register('newPin')}
+                                    placeholder="Enter the new PIN"
+                                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-indigo-500"
+                                />
+                                {errors.newPin && <p className="text-red-500 text-sm mt-1">{errors.newPin.message}</p>}
+                            </div>
                         </div>
                     )}
 
