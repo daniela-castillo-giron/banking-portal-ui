@@ -147,26 +147,42 @@ const FundTransfer = () => {
 
                 {step === 2 && data && (
                     <>
-                        <h2 className="text-2xl font-semibold mb-4 text-center">Transfer Confirmation</h2>
-                        <div className="text-sm space-y-4">
-                            <div>
-                                <strong>Origin Account:</strong>
-                                <p>Account: {userProfileData?.accountNumber} - {userProfileData?.name}</p>
-                                <p>Debit Amount: ${Number(data.amount).toFixed(2)}</p>
-                                <p>Fee: $0.00</p>
-                                <p>Total Debit: ${(Number(data.amount) + 0).toFixed(2)}</p>
+                        <h2 className="text-2xl font-semibold mb-6 text-center">Transfer Confirmation</h2>
+                        <div className="space-y-6">
+                            <div className="bg-gray-50 p-4 rounded border">
+                                <h3 className="font-semibold mb-4 text-size-md">Origin Account</h3>
+                                <dl className="grid grid-cols-2 gap-y-2 text-sm">
+                                    <dt className="text-gray-500 font-semibold">Account</dt>
+                                    <dd>{userProfileData?.accountNumber} - {userProfileData?.name?.toUpperCase()}</dd>
+
+                                    <dt className="text-gray-500 font-semibold">Debit Amount</dt>
+                                    <dd>${Number(data.amount).toFixed(2)}</dd>
+
+                                    <dt className="text-gray-500 font-semibold">Fee</dt>
+                                    <dd>$0.00</dd>
+
+                                    <dt className="text-gray-500 font-semibold">Total Debit</dt>
+                                    <dd>${(Number(data.amount)).toFixed(2)}</dd>
+                                </dl>
                             </div>
-                            <div className="border-t pt-4">
-                                <strong>Target Account:</strong>
-                                <p>Bank: OneStop Bank</p>
-                                <p>Account: {data.targetAccountNumber}</p>
-                                {/* <p>Account Holder Name: {data.name}</p> */}
-                                <p>Account Type: Savings</p>
-                                {/* <p>Beneficiary ID: 111111111111</p> */}
-                                <p>Credit Amount: ${Number(data.amount).toFixed(2)}</p>
+                            <div className="bg-gray-50 p-4 rounded border">
+                                <h3 className="font-semibold mb-4 text-size-md">Target Account</h3>
+                                <dl className="grid grid-cols-2 gap-y-2 text-sm">
+                                    <dt className="text-gray-500 font-semibold">Bank</dt>
+                                    <dd>OneStop Bank</dd>
+
+                                    <dt className="text-gray-500 font-semibold">Account</dt>
+                                    <dd>{data.targetAccountNumber}</dd>
+
+                                    <dt className="text-gray-500 font-semibold">Account Type</dt>
+                                    <dd>Savings</dd>
+
+                                    <dt className="text-gray-500 font-semibold">Credit Amount</dt>
+                                    <dd>${Number(data.amount).toFixed(2)}</dd>
+                                </dl>
                             </div>
-                            <div className="mt-4 p-3 bg-yellow-100 text-sm border-l-4 border-yellow-400">
-                                ⚠️ Make sure the <strong>account holder name</strong> matches the name of the beneficiary for the destination account.
+                            <div className="mt-2 p-4 bg-yellow-100 border-l-4 border-yellow-400 text-sm text-yellow-800 rounded">
+                                ⚠️ Make sure the <strong>account number</strong> matches the number of the beneficiary for the destination account.
                             </div>
                         </div>
                         <div className="flex justify-between mt-6">
@@ -188,29 +204,55 @@ const FundTransfer = () => {
 
                 {step === 3 && data && (
                     <>
-                        <h2 className={`text-2xl font-semibold mb-4 text-center ${resultStatus === 'success' ? 'text-green-600' : 'text-red-600'
-                            }`}>
+                        <h2 className={`text-2xl font-semibold mb-6 text-center ${resultStatus === 'success' ? 'text-green-600' : 'text-red-600'}`}>
                             {resultStatus === 'success' ? 'Successful Transfer' : 'Failed Transfer'}
                         </h2>
-                        <div className="text-sm space-y-4">
-                            <div>
-                                <strong>Origin Account:</strong>
-                                <p>Account: {userProfileData?.accountNumber} - {userProfileData?.name}</p>
-                                <p>Debit Amount: ${Number(data.amount).toFixed(2)}</p>
-                                <p>Fee: $0.00</p>
-                                <p>Total Debit: ${(Number(data.amount) + 0).toFixed(2)}</p>
+                        <div className="space-y-6">
+                            <div className="bg-gray-50 p-4 rounded border">
+                                <h3 className="font-semibold mb-4 text-size-md">Origin Account</h3>
+                                <dl className="grid grid-cols-2 gap-y-2 text-sm">
+                                    <dt className="text-gray-500 font-semibold">Account</dt>
+                                    <dd>{userProfileData?.accountNumber} - {userProfileData?.name?.toUpperCase()}</dd>
+
+                                    <dt className="text-gray-500 font-semibold">Debit Amount</dt>
+                                    <dd>${Number(data.amount).toFixed(2)}</dd>
+
+                                    <dt className="text-gray-500 font-semibold">Fee</dt>
+                                    <dd>$0.00</dd>
+
+                                    <dt className="text-gray-500 font-semibold">Total Debit</dt>
+                                    <dd>${(Number(data.amount)).toFixed(2)}</dd>
+                                </dl>
                             </div>
-                            <div className="border-t pt-4">
-                                <strong>Target Account:</strong>
-                                <p>Bank: OneStop Bank</p>
-                                <p>Account: {data.targetAccountNumber}</p>
-                                {/* <p>Account Holder Name: {data.name}</p> */}
-                                <p>Account Type: Savings</p>
-                                {/* <p>Beneficiary ID: 111111111111</p> */}
-                                <p>Credit Amount: ${Number(data.amount).toFixed(2)}</p>
-                                <p>Reference: {Math.floor(Math.random() * 1000000000)}</p>
-                                <p>Date: {new Date().toLocaleString()}</p>
-                                <p>Result: {resultStatus === 'success' ? 'Your transfer has been sent and is being processed.' : 'The transfer could not be completed.'}</p>
+
+                            <div className="bg-gray-50 p-4 rounded border">
+                                <h3 className="font-semibold mb-4 text-size-md">Target Account</h3>
+                                <dl className="grid grid-cols-2 gap-y-2 text-sm">
+                                    <dt className="text-gray-500 font-semibold">Bank</dt>
+                                    <dd>OneStop Bank</dd>
+
+                                    <dt className="text-gray-500 font-semibold">Account</dt>
+                                    <dd>{data.targetAccountNumber}</dd>
+
+                                    <dt className="text-gray-500 font-semibold">Account Type</dt>
+                                    <dd>Savings</dd>
+
+                                    <dt className="text-gray-500 font-semibold">Credit Amount</dt>
+                                    <dd>${Number(data.amount).toFixed(2)}</dd>
+
+                                    <dt className="text-gray-500 font-semibold">Reference</dt>
+                                    <dd>{Math.floor(Math.random() * 1000000000)}</dd>
+
+                                    <dt className="text-gray-500 font-semibold">Date</dt>
+                                    <dd>{new Date().toLocaleString()}</dd>
+
+                                    <dt className="text-gray-500 font-semibold">Result</dt>
+                                    <dd>
+                                        {resultStatus === 'success'
+                                            ? 'Your transfer has been sent and is being processed.'
+                                            : 'The transfer could not be completed.'}
+                                    </dd>
+                                </dl>
                             </div>
                         </div>
                         <div className="flex justify-center mt-6">
