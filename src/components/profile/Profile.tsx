@@ -25,7 +25,13 @@ const Profile = () => {
     value: country.code,
   }));
 
-  const { register, handleSubmit, setValue, formState: { errors }, reset } = useForm({
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+    reset,
+  } = useForm({
     resolver: yupResolver(schema),
   });
 
@@ -34,152 +40,154 @@ const Profile = () => {
   }, []);
 
   const getUserProfileData = () => {
-    authService.getUserDetails().then((response) => {
-      setUserProfile(response);
-      reset(response); // Fill form with fetched data
-    }).catch((error) => {
-      console.error('User details fetching failed: ' + error);
-      toast.error('User details fetching failed: ' + error);
-    });
+    authService
+      .getUserDetails()
+      .then((response) => {
+        setUserProfile(response);
+        reset(response);
+      })
+      .catch((error) => {
+        console.error('User details fetching failed: ' + error);
+        toast.error('User details fetching failed: ' + error);
+      });
   };
 
   const onSubmit = (data) => {
-    authService.updateUserProfile(data).then((response) => {
-      setUserProfile(response);
-      setShowUpdateForm(false);
-      toast.success('Profile updated successfully');
-    }).catch((error) => {
-      console.error('User details update failed: ' + error);
-      toast.error('User details update failed: ' + error?.response?.data || 'Something went wrong');
-    });
+    authService
+      .updateUserProfile(data)
+      .then((response) => {
+        setUserProfile(response);
+        setShowUpdateForm(false);
+        toast.success('Profile updated successfully');
+      })
+      .catch((error) => {
+        console.error('User details update failed: ' + error);
+        toast.error('User details update failed: ' + (error?.response?.data || 'Something went wrong'));
+      });
   };
 
   if (!userProfile) return null;
 
   return (
-    <div className="container mx-auto md:p-5 p-0">
-      <h1 className="text-2xl font-bold text-indigo-700 mb-6">{showUpdateForm ? "Edit" : ""} User Profile</h1>
+    <div className="min-h-screen bg-white text-slate-700 flex flex-col items-center py-10 px-4">
+      <div className="w-full max-w-3xl">
+        <h2 className="text-3xl font-semibold mb-6 text-center">User Profile</h2>
 
-      {!showUpdateForm ? (
-        <div className="rounded-lg bg-white md:p-6 p-2 shadow-lg">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div key="name">
-              <label className="font-semibold">Name:</label>
-              <span className="text-gray-800 block">{userProfile.name || 'N/A'}</span>
+        {!showUpdateForm ? (
+          <div className="bg-gray-50 p-6 rounded-lg border shadow-sm space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+              {[
+                { label: 'Name', value: userProfile.name },
+                { label: 'Email', value: userProfile.email },
+                { label: 'Country Code', value: userProfile.countryCode },
+                { label: 'Phone Number', value: userProfile.phoneNumber },
+                { label: 'Address', value: userProfile.address },
+                { label: 'Account Number', value: userProfile.accountNumber },
+                { label: 'Branch', value: userProfile.branch },
+                { label: 'Account Type', value: userProfile.accountType },
+                { label: 'IFSC Code', value: userProfile.ifscCode },
+              ].map((field, i) => (
+                <div key={i}>
+                  <label className="font-semibold text-size-md">{field.label}:</label>
+                  <p className="text-slate-800">{field.value || 'N/A'}</p>
+                </div>
+              ))}
             </div>
-            <div key="email">
-              <label className="font-semibold">Email:</label>
-              <span className="text-gray-800 block">{userProfile.email || 'N/A'}</span>
-            </div>
-            <div key="countryCode">
-              <label className="font-semibold">Country Code:</label>
-              <span className="text-gray-800 block">{userProfile.countryCode || 'N/A'}</span>
-            </div>
-            <div key="address">
-              <label className="font-semibold">Address:</label>
-              <span className="text-gray-800 block">{userProfile.address || 'N/A'}</span>
-            </div>
-            <div key="phoneNumber">
-              <label className="font-semibold">Phone Number:</label>
-              <span className="text-gray-800 block">{userProfile.phoneNumber || 'N/A'}</span>
-            </div>
-            <div key="accountNumber">
-              <label className="font-semibold">Account Number:</label>
-              <span className="text-gray-800 block">{userProfile.accountNumber || 'N/A'}</span>
-            </div>
-            <div key="branch">
-              <label className="font-semibold">Branch:</label>
-              <span className="text-gray-800 block">{userProfile.branch || 'N/A'}</span>
-            </div>
-            <div key="accountType">
-              <label className="font-semibold">Account Type:</label>
-              <span className="text-gray-800 block">{userProfile.accountType || 'N/A'}</span>
-            </div>
-            <div key="ifscCode">
-              <label className="font-semibold">IFSC Code:</label>
-              <span className="text-gray-800 block">{userProfile.ifscCode || 'N/A'}</span>
-            </div>
-          </div>
-          <button onClick={() => setShowUpdateForm(true)} className="mt-6 bg-blue-100 text-indigo-900 py-2 px-4 rounded-lg hover:bg-blue-200">
-            Edit Profile
-          </button>
-        </div>
-      ) : (
-        <form onSubmit={handleSubmit(onSubmit)} className="bg-white rounded-lg shadow-lg md:p-6 p-2">
-          {/* Name */}
-          <div className="mb-4">
-            <label className="font-semibold">Name:</label>
-            <input
-              {...register('name')}
-              type="text"
-              className={`border rounded p-2 w-full focus:outline-none ${errors.name ? 'border-red-500' : 'border-gray-300'}`}
-            />
-            {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
-          </div>
 
-          {/* Email */}
-          <div className="mb-4">
-            <label className="font-semibold">Email:</label>
-            <input
-              {...register('email')}
-              type="email"
-              className={`border rounded p-2 w-full focus:outline-none ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
-            />
-            {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
+            <div className="flex justify-center">
+              <button
+                onClick={() => setShowUpdateForm(true)}
+                className="bg-indigo-600 text-white py-2 px-6 rounded hover:bg-indigo-700 font-medium"
+              >
+                Edit Profile
+              </button>
+            </div>
           </div>
+        ) : (
+          <form onSubmit={handleSubmit(onSubmit)} className="bg-white p-6 rounded-lg shadow space-y-4">
+            {/* Name */}
+            <div>
+              <label className="block text-sm font-semibold mb-1">Name</label>
+              <input
+                {...register('name')}
+                className={`w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring ${errors.name ? 'border-red-500' : 'border-gray-300'}`}
+              />
+              {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
+            </div>
 
-          {/* Country Code (Dropdown ready) */}
-          <div className="mb-4">
-            <label className="font-semibold">Country Code:</label>
-            <Select
-              value={countries.find((country) => country.value === userProfile.countryCode)}
-              options={countries}
-              onChange={(selected) => selected ? setValue('countryCode', selected.value, { shouldValidate: true }) : null}
-              className="w-full rounded-lg shadow-sm"
-              placeholder="Select Country"
-            />
-            {errors.countryCode && <p className="text-red-500 text-sm">{errors.countryCode.message}</p>}
-          </div>
+            {/* Email */}
+            <div>
+              <label className="block text-sm font-semibold mb-1">Email</label>
+              <input
+                {...register('email')}
+                type="email"
+                className={`w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
+              />
+              {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
+            </div>
 
-          {/* Phone Number */}
-          <div className="mb-4">
-            <label className="font-semibold">Phone Number:</label>
-            <input
-              {...register('phoneNumber')}
-              type="text"
-              className={`border rounded p-2 w-full focus:outline-none ${errors.phoneNumber ? 'border-red-500' : 'border-gray-300'}`}
-            />
-            {errors.phoneNumber && <p className="text-red-500 text-sm">{errors.phoneNumber.message}</p>}
-          </div>
+            {/* Country Code */}
+            <div>
+              <label className="block text-sm font-semibold mb-1">Country Code</label>
+              <Select
+                value={countries.find((c) => c.value === userProfile.countryCode)}
+                options={countries}
+                onChange={(selected) => selected && setValue('countryCode', selected.value, { shouldValidate: true })}
+                placeholder="Select Country"
+                className="text-sm"
+              />
+              {errors.countryCode && <p className="text-red-500 text-sm mt-1">{errors.countryCode.message}</p>}
+            </div>
 
-          {/* Address */}
-          <div className="mb-4">
-            <label className="font-semibold">Address:</label>
-            <input
-              {...register('address')}
-              type="text"
-              className={`border rounded p-2 w-full focus:outline-none ${errors.address ? 'border-red-500' : 'border-gray-300'}`}
-            />
-            {errors.address && <p className="text-red-500 text-sm">{errors.address.message}</p>}
-          </div>
+            {/* Phone Number */}
+            <div>
+              <label className="block text-sm font-semibold mb-1">Phone Number</label>
+              <input
+                {...register('phoneNumber')}
+                className={`w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring ${errors.phoneNumber ? 'border-red-500' : 'border-gray-300'}`}
+              />
+              {errors.phoneNumber && <p className="text-red-500 text-sm mt-1">{errors.phoneNumber.message}</p>}
+            </div>
 
-          {/* Password */}
-          <div className="mb-4">
-            <label className="font-semibold">Password:</label>
-            <input
-              {...register('password')}
-              type="password"
-              className={`border rounded p-2 w-full focus:outline-none ${errors.password ? 'border-red-500' : 'border-gray-300'}`}
-            />
-            {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
-          </div>
+            {/* Address */}
+            <div>
+              <label className="block text-sm font-semibold mb-1">Address</label>
+              <input
+                {...register('address')}
+                className={`w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring ${errors.address ? 'border-red-500' : 'border-gray-300'}`}
+              />
+              {errors.address && <p className="text-red-500 text-sm mt-1">{errors.address.message}</p>}
+            </div>
 
-          <div className="flex gap-2">
-            <button type="submit" className="mt-6 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700">Save Changes</button>
-            <button type="button" onClick={() => setShowUpdateForm(false)} className="mt-6 bg-gray-100 text-slate-800 py-2 px-4 rounded hover:bg-indigo-50">Cancel</button>
-          </div>
-        </form>
-      )}
+            {/* Password */}
+            <div>
+              <label className="block text-sm font-semibold mb-1">Password</label>
+              <input
+                {...register('password')}
+                type="password"
+                className={`w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring ${errors.password ? 'border-red-500' : 'border-gray-300'}`}
+              />
+              {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
+            </div>
+
+            <div className="flex gap-4 justify-between mt-6">
+              <button
+                type="button"
+                onClick={() => setShowUpdateForm(false)}
+                className="bg-gray-200 text-slate-700 font-semibold py-2 px-6 rounded hover:bg-gray-300"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="bg-indigo-600 text-white font-semibold py-2 px-6 rounded hover:bg-indigo-700"
+              >
+                Save Changes
+              </button>
+            </div>
+          </form>
+        )}
+      </div>
     </div>
   );
 };
