@@ -94,8 +94,8 @@ const FundTransfer = () => {
     );
 
     return (
-        <div className="flex justify-center items-center coverparentspace">
-            <div className="max-w-md w-full rounded-lg bg-white p-6 leading-5 text-slate-700 shadow-xl shadow-black/5 ring-1 ring-slate-700/10">
+        <div className="min-h-screen bg-white text-slate-700 flex flex-col items-center py-10 px-4">
+            <div className="w-full max-w-2xl">
                 <ProgressIndicator />
 
                 {step === 1 && (
@@ -151,7 +151,7 @@ const FundTransfer = () => {
                         <div className="text-sm space-y-4">
                             <div>
                                 <strong>Origin Account:</strong>
-                                <p>Account: {userProfileData.accountNumber} - {userProfileData.name}</p>
+                                <p>Account: {userProfileData?.accountNumber} - {userProfileData?.name}</p>
                                 <p>Debit Amount: ${Number(data.amount).toFixed(2)}</p>
                                 <p>Fee: $0.00</p>
                                 <p>Total Debit: ${(Number(data.amount) + 0).toFixed(2)}</p>
@@ -195,7 +195,7 @@ const FundTransfer = () => {
                         <div className="text-sm space-y-4">
                             <div>
                                 <strong>Origin Account:</strong>
-                                <p>Account: {userProfileData.accountNumber} - {userProfileData.name}</p>
+                                <p>Account: {userProfileData?.accountNumber} - {userProfileData?.name}</p>
                                 <p>Debit Amount: ${Number(data.amount).toFixed(2)}</p>
                                 <p>Fee: $0.00</p>
                                 <p>Total Debit: ${(Number(data.amount) + 0).toFixed(2)}</p>
@@ -215,9 +215,7 @@ const FundTransfer = () => {
                         </div>
                         <div className="flex justify-center mt-6">
                             <button
-                                onClick={() => {
-                                    handleReset();
-                                }}
+                                onClick={handleReset}
                                 className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded"
                             >
                                 Finish
