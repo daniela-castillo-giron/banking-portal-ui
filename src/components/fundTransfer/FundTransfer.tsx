@@ -78,7 +78,7 @@ const FundTransfer = () => {
 
     const ProgressIndicator = () => (
         <div className="flex justify-center mb-6 space-x-8 text-sm">
-            {['Selección', 'Confirmación', 'Resultado'].map((label, index) => {
+            {['Input', 'Confirmation', 'Result'].map((label, index) => {
                 const current = index + 1;
                 return (
                     <div key={index} className="flex flex-col items-center">
