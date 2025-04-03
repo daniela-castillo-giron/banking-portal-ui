@@ -6,6 +6,9 @@ import authService from '../../services/authService';
 import { toast } from 'react-toastify';
 import Select from 'react-select';
 import { getData } from 'country-list';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserDetails, setUserDetails } from '../../store/userSlice';
+import { REDUX_SLICE_DATA_STATUS } from '../../utils/constants';
 
 const schema = yup.object().shape({
   name: yup.string().required('Name is required'),
@@ -17,6 +20,10 @@ const schema = yup.object().shape({
 });
 
 const Profile = () => {
+  const dispatch = useDispatch();
+
+  const userDetails = useSelector((state) => state.user);
+
   const [userProfile, setUserProfile] = useState({});
   const [showUpdateForm, setShowUpdateForm] = useState(false);
 
@@ -36,27 +43,22 @@ const Profile = () => {
   });
 
   useEffect(() => {
-    getUserProfileData();
-  }, []);
-
-  const getUserProfileData = () => {
-    authService
-      .getUserDetails()
-      .then((response) => {
-        setUserProfile(response);
-        reset(response);
-      })
-      .catch((error) => {
-        console.error('User details fetching failed: ' + error);
-        toast.error('User details fetching failed: ' + error);
-      });
-  };
+    if (userDetails.status === REDUX_SLICE_DATA_STATUS.IDLE) {
+      dispatch(getUserDetails());
+    } else if (userDetails.status === REDUX_SLICE_DATA_STATUS.SUCCEEDED) {
+      setUserProfile(userDetails.data);
+      reset(userDetails.data);
+    } else if (userDetails.status === REDUX_SLICE_DATA_STATUS.FAILED) {
+      console.error('User details fetching failed: ' + userDetails.error);
+      toast.error('User details fetching failed: ' + userDetails.error);
+    }
+  }, [userDetails]);
 
   const onSubmit = (data) => {
     authService
       .updateUserProfile(data)
       .then((response) => {
-        setUserProfile(response);
+        dispatch(setUserDetails(response));
         setShowUpdateForm(false);
         toast.success('Profile updated successfully');
       })

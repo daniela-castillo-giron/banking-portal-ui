@@ -6,7 +6,9 @@ import { useNavigate } from 'react-router-dom';
 import ApiService from '../../services/apiService';
 import { useLoader } from '../../services/loaderModalService';
 import { toast } from 'react-toastify';
-import AuthService from '../../services/authService';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserDetails } from '../../store/userSlice';
+import { REDUX_SLICE_DATA_STATUS } from '../../utils/constants';
 import './deposit.css';
 
 const schema = yup.object().shape({
@@ -22,6 +24,10 @@ const schema = yup.object().shape({
 });
 
 const Deposit = () => {
+    const dispatch = useDispatch();
+
+    const userDetails = useSelector((state) => state.user);
+
     const navigate = useNavigate();
     const { show, hide } = useLoader();
 
@@ -38,17 +44,15 @@ const Deposit = () => {
     } = useForm({ resolver: yupResolver(schema) });
 
     useEffect(() => {
-        fetchUserProfile();
-    }, []);
-
-    const fetchUserProfile = async () => {
-        try {
-            const userData = await AuthService.getUserDetails();
-            setUserProfileData(userData);
-        } catch (error) {
-            console.error('Error fetching user profile data:', error);
+        if (userDetails.status === REDUX_SLICE_DATA_STATUS.IDLE) {
+            dispatch(getUserDetails());
+        } else if (userDetails.status === REDUX_SLICE_DATA_STATUS.SUCCEEDED) {
+            setUserProfileData(userDetails.data);
+        } else if (userDetails.status === REDUX_SLICE_DATA_STATUS.FAILED) {
+            console.error('User details fetching failed: ' + userDetails.error);
+            toast.error('User details fetching failed: ' + userDetails.error);
         }
-    };
+    }, [userDetails]);
 
     const handleFormSubmit = (formData) => {
         setData(formData);

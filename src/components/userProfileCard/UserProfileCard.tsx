@@ -1,22 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import AuthService from '../../services/authService';
+import { toast } from 'react-toastify';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserDetails } from '../../store/userSlice';
+import { REDUX_SLICE_DATA_STATUS } from '../../utils/constants';
 import './userprofilecard.css';
 
 const UserProfileCard = () => {
+    const dispatch = useDispatch();
+
+    const userDetails = useSelector((state) => state.user);
+
     const [userProfileData, setUserProfileData] = useState(null);
 
     useEffect(() => {
-        fetchUserProfile();
-    }, []);
-
-    const fetchUserProfile = async () => {
-        try {
-            const data = await AuthService.getUserDetails();
-            setUserProfileData(data);
-        } catch (error) {
-            console.error('Error fetching user profile data:', error);
+        if (userDetails.status === REDUX_SLICE_DATA_STATUS.IDLE) {
+            dispatch(getUserDetails());
+        } else if (userDetails.status === REDUX_SLICE_DATA_STATUS.SUCCEEDED) {
+            setUserProfileData(userDetails.data);
+        } else if (userDetails.status === REDUX_SLICE_DATA_STATUS.FAILED) {
+            console.error('User details fetching failed: ' + userDetails.error);
+            toast.error('User details fetching failed: ' + userDetails.error);
         }
-    };
+    }, [userDetails]);
 
     return (
         <div className="w-full bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg shadow-lg p-6 text-white">
