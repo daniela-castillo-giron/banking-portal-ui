@@ -1,19 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import ApiService from '../../services/apiService';
 import { toast } from 'react-toastify';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAccountDetails } from '../../store/accountSlice';
+import { REDUX_SLICE_DATA_STATUS } from '../../utils/constants';
 import './accountdetailcard.css';
 
 const AccountDetailCard = () => {
-    const [accountDetails, setAccountDetails] = useState(null);
+    const dispatch = useDispatch();
+
+    const accountDetails = useSelector(state => state.account);
+
+    const [accountData, setAccountData] = useState(null);
 
     useEffect(() => {
-        ApiService.getAccountDetails()
-            .then((data) => setAccountDetails(data))
-            .catch((error) => {
-                console.error('Account details fetching failed: ' + error);
-                toast.error('Account details fetching failed: ' + error);
-            });
-    }, []);
+        if (accountDetails.status === REDUX_SLICE_DATA_STATUS.IDLE) {
+            dispatch(getAccountDetails());
+        } else if (accountDetails.status === REDUX_SLICE_DATA_STATUS.SUCCEEDED) {
+            setAccountData(accountDetails.data);
+        } else if (accountDetails.status === REDUX_SLICE_DATA_STATUS.FAILED) {
+            console.error('Account details fetching failed: ' + accountDetails.error);
+            toast.error('Account details fetching failed: ' + accountDetails.error);
+        }
+    }, [accountDetails]);
 
     const formatCurrency = (amount) => {
         return new Intl.NumberFormat('en-US', {
@@ -25,28 +33,28 @@ const AccountDetailCard = () => {
     return (
         <div className="p-4 bg-blue-500 rounded-lg shadow-lg text-white">
             <h2 className="text-3xl font-semibold mb-6 text-yellow-400">
-                {formatCurrency(accountDetails?.balance)}
+                {formatCurrency(accountData?.balance)}
             </h2>
 
             <div className="grid grid-cols-2 gap-4">
                 <div className="mb-4">
                     <label className="block text-sm font-bold">Account Number:</label>
-                    <span className="font-bold text-base">{accountDetails?.accountNumber}</span>
+                    <span className="font-bold text-base">{accountData?.accountNumber}</span>
                 </div>
                 <div className="mb-4">
                     <label className="block text-sm font-bold">Account Type:</label>
-                    <span className="font-bold text-base">{accountDetails?.accountType}</span>
+                    <span className="font-bold text-base">{accountData?.accountType}</span>
                 </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
                 <div className="mb-4">
                     <label className="block text-sm font-bold">Branch:</label>
-                    <span className="font-bold text-base">{accountDetails?.branch}</span>
+                    <span className="font-bold text-base">{accountData?.branch}</span>
                 </div>
                 <div className="mb-4">
                     <label className="block text-sm font-bold">IFSC Code:</label>
-                    <span className="font-bold text-base">{accountDetails?.ifscCode}</span>
+                    <span className="font-bold text-base">{accountData?.ifscCode}</span>
                 </div>
             </div>
         </div>
