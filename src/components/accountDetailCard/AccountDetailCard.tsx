@@ -13,11 +13,11 @@ const AccountDetailCard = () => {
     const [accountData, setAccountData] = useState(null);
 
     useEffect(() => {
-        if (accountDetails.accountStatus === REDUX_SLICE_DATA_STATUS.IDLE) {
+        if (accountDetails.status === REDUX_SLICE_DATA_STATUS.IDLE) {
             dispatch(getAccountDetails());
-        } else if (accountDetails.accountStatus === REDUX_SLICE_DATA_STATUS.SUCCEEDED) {
+        } else if (accountDetails.status === REDUX_SLICE_DATA_STATUS.SUCCEEDED) {
             setAccountData(accountDetails.data);
-        } else if (accountDetails.accountStatus === REDUX_SLICE_DATA_STATUS.FAILED) {
+        } else if (accountDetails.status === REDUX_SLICE_DATA_STATUS.FAILED) {
             console.error('Account details fetching failed: ' + accountDetails.error);
             toast.error('Account details fetching failed: ' + accountDetails.error);
         }

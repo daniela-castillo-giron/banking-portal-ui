@@ -4,27 +4,22 @@ import UserProfileCard from '../userprofilecard/UserProfileCard';
 import AccountDetailCard from '../accountDetailCard/AccountDetailCard';
 import TransactionHistory from '../transactionHistory/TransactionHistory';
 import PinCreationModal from '../pinCreationModal/PinCreationModal';
-import { useDispatch, useSelector } from 'react-redux';
-import { checkAccountPin } from '../../store/accountSlice';
+import { useSelector } from 'react-redux';
 import { REDUX_SLICE_DATA_STATUS } from '../../utils/constants';
 import './dashboard.css';
 
 const Dashboard = () => {
-    const dispatch = useDispatch();
-
     const accountDetails = useSelector(state => state.account);
 
     const [showPINCreationModel, setShowPINCreationModel] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (accountDetails.pinStatus === REDUX_SLICE_DATA_STATUS.IDLE) {
-            dispatch(checkAccountPin());
-        } else if (accountDetails.pinStatus === REDUX_SLICE_DATA_STATUS.SUCCEEDED) {
+        if (accountDetails.status === REDUX_SLICE_DATA_STATUS.SUCCEEDED) {
             if (accountDetails.data.hasPin === false) {
                 setShowPINCreationModel(true);
             }
-        } else if (accountDetails.pinStatus === REDUX_SLICE_DATA_STATUS.FAILED) {
+        } else if (accountDetails.status === REDUX_SLICE_DATA_STATUS.FAILED) {
             console.error('Account PIN status checking failed: ' + accountDetails.error);
         }
     }, [accountDetails]);

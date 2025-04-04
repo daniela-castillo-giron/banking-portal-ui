@@ -7,7 +7,7 @@ import ApiService from '../../services/apiService';
 import { useLoader } from '../../services/loaderModalService';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
-import { setAccountPinExistence, checkAccountPin } from '../../store/accountSlice';
+import { getAccountDetails, setAccountPinExistence } from '../../store/accountSlice';
 import { REDUX_SLICE_DATA_STATUS } from '../../utils/constants';
 import './accountPin.css';
 
@@ -41,13 +41,13 @@ const AccountPin = () => {
     });
 
     useEffect(() => {
-        if (accountDetails.pinStatus === REDUX_SLICE_DATA_STATUS.IDLE) {
-            dispatch(checkAccountPin());
-        } else if (accountDetails.pinStatus === REDUX_SLICE_DATA_STATUS.SUCCEEDED) {
+        if (accountDetails.status === REDUX_SLICE_DATA_STATUS.IDLE) {
+            dispatch(getAccountDetails());
+        } else if (accountDetails.status === REDUX_SLICE_DATA_STATUS.SUCCEEDED) {
             if (accountDetails.data.hasPin) {
                 setShowGeneratePINForm(false);
             }
-        } else if (accountDetails.pinStatus === REDUX_SLICE_DATA_STATUS.FAILED) {
+        } else if (accountDetails.status === REDUX_SLICE_DATA_STATUS.FAILED) {
             console.error('Account PIN status checking failed: ' + accountDetails.error);
             toast.error('Account PIN status checking failed: ' + accountDetails.error);
         }

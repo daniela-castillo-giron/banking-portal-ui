@@ -8,21 +8,9 @@ export const getAccountDetails = createAsyncThunk(
     'account/getAccountDetails',
     async (_, thunkAPI) => {
         try {
-            const response = await ApiService.getAccountDetails();
-            return response;
-        } catch (error) {
-            return thunkAPI.rejectWithValue(error?.message);
-        }
-    }
-);
-
-// Async thunk to check if a PIN has been created
-export const checkAccountPin = createAsyncThunk(
-    'account/checkAccountPin',
-    async (_, thunkAPI) => {
-        try {
-            const response = await ApiService.checkPinCreated();
-            return response;
+            const accountDetailsResponse = await ApiService.getAccountDetails();
+            const pinCheckResponse = await ApiService.checkPinCreated();
+            return { ...accountDetailsResponse, hasPin: pinCheckResponse };
         } catch (error) {
             return thunkAPI.rejectWithValue(error?.message);
         }
@@ -39,8 +27,7 @@ const initialState = {
         ifscCode: null,
         hasPin: null,
     },
-    accountStatus: REDUX_SLICE_DATA_STATUS.IDLE,
-    pinStatus: REDUX_SLICE_DATA_STATUS.IDLE,
+    status: REDUX_SLICE_DATA_STATUS.IDLE,
     error: null,
 };
 
@@ -59,29 +46,18 @@ const accountSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(getAccountDetails.pending, (state) => {
-                state.accountStatus = REDUX_SLICE_DATA_STATUS.LOADING;
+                state.status = REDUX_SLICE_DATA_STATUS.LOADING;
                 state.error = null;
             })
             .addCase(getAccountDetails.fulfilled, (state, action) => {
-                state.accountStatus = REDUX_SLICE_DATA_STATUS.SUCCEEDED;
+                state.status = REDUX_SLICE_DATA_STATUS.SUCCEEDED;
                 state.data = action.payload;
                 state.error = null;
             })
             .addCase(getAccountDetails.rejected, (state, action) => {
-                state.accountStatus = REDUX_SLICE_DATA_STATUS.FAILED;
+                state.status = REDUX_SLICE_DATA_STATUS.FAILED;
                 state.error = action.payload;
             })
-            .addCase(checkAccountPin.pending, (state) => {
-                state.pinStatus = REDUX_SLICE_DATA_STATUS.LOADING;
-            })
-            .addCase(checkAccountPin.fulfilled, (state, action) => {
-                state.pinStatus = REDUX_SLICE_DATA_STATUS.SUCCEEDED;
-                state.data.hasPin = action.payload;
-            })
-            .addCase(checkAccountPin.rejected, (state, action) => {
-                state.pinStatus = REDUX_SLICE_DATA_STATUS.FAILED;
-                state.error = action.payload;
-            });
     },
 });
 
