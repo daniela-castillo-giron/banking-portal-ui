@@ -1,13 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import ApiService from '../../services/apiService';
 import TransactionChart from '../transactionChart/TransactionChart';
 import DailyTransactionPieChart from '../dailyTransactionPieChart/DailyTransactionPieChart';
 import MonthlyTransactionChart from '../monthlyTransactionChart/MonthlyTransactionChart';
 import DownloadTransactions from '../downloadTransactions/DownloadTransactions';
 import { getAccountNumberFromToken } from '../transaction/Transaction';
+import { toast } from 'react-toastify';
+import { useDispatch, useSelector } from 'react-redux';
+import { getTransactions } from '../../store/transactionSlice';
+import { REDUX_SLICE_DATA_STATUS } from '../../utils/constants';
 import './transactionHistory.css';
 
 const TransactionHistory = () => {
+    const dispatch = useDispatch();
+
+    const transactions = useSelector(state => state.transactions);
+
     const [transactionHistory, setTransactionHistory] = useState([]);
     const [filteredTransactions, setFilteredTransactions] = useState([]);
     const [filterCriteria, setFilterCriteria] = useState('');
@@ -17,19 +24,17 @@ const TransactionHistory = () => {
     const itemsPerPage = 10;
 
     useEffect(() => {
-        fetchTransactions();
-    }, []);
-
-    const fetchTransactions = async () => {
-        try {
-            const data = await ApiService.getTransactions();
-            setTransactionHistory(data);
-            setFilteredTransactions(data);
+        if (transactions.status === REDUX_SLICE_DATA_STATUS.IDLE) {
+            dispatch(getTransactions());
+        } else if (transactions.status === REDUX_SLICE_DATA_STATUS.SUCCEEDED) {
+            setTransactionHistory(transactions.data);
+            setFilteredTransactions(transactions.data);
             setUserAccountNumber(getAccountNumberFromToken());
-        } catch (error) {
-            console.error('Error fetching transactions:', error);
+        } else if (transactions.status === REDUX_SLICE_DATA_STATUS.FAILED) {
+            console.error('Transactions history fetching failed: ' + transactions.error);
+            toast.error('Transactions history fetching failed: ' + transactions.error);
         }
-    };
+    }, [transactions]);
 
     const handleFilterChange = (e) => {
         const criteria = e.target.value;
