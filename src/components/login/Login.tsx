@@ -6,9 +6,14 @@ import { useLoader } from '../../services/loaderModalService';
 import { toast } from 'react-toastify';
 import environment from '../../config/environment';
 import { useAuth } from '../../context/AuthContext';
+import { useDispatch } from 'react-redux';
+import { clearUserDetails } from '../../store/userSlice';
+import { clearAccountDetails } from '../../store/accountSlice';
+import { clearTransactions } from '../../store/transactionsSlice';
 import './login.css';
 
 const Login = () => {
+    const dispatch = useDispatch();
     const { login } = useAuth();
     const { show: showLoader, hide: hideLoader } = useLoader();
     const { register, handleSubmit, formState: { errors } } = useForm();
@@ -22,6 +27,9 @@ const Login = () => {
             const response = await AuthService.login(data.identifier, data.password);
             localStorage.setItem(authTokenName, response.token);
             hideLoader();
+            dispatch(clearUserDetails());
+            dispatch(clearAccountDetails());
+            dispatch(clearTransactions());
             login();
             navigate('/dashboard');
         } catch (error) {
