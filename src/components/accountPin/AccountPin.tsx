@@ -6,6 +6,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import ApiService from '../../services/apiService';
 import { useLoader } from '../../services/loaderModalService';
 import { toast } from 'react-toastify';
+import { useDispatch, useSelector } from 'react-redux';
+import { setAccountPinExistence, checkAccountPin } from '../../store/accountSlice';
+import { REDUX_SLICE_DATA_STATUS } from '../../utils/constants';
 import './accountPin.css';
 
 const pinSchema = yup.object().shape({
@@ -21,6 +24,10 @@ const changeSchema = yup.object().shape({
 });
 
 const AccountPin = () => {
+    const dispatch = useDispatch();
+
+    const accountDetails = useSelector(state => state.account);
+
     const { show, hide } = useLoader();
     const [showGeneratePINForm, setShowGeneratePINForm] = useState(true);
     const navigate = useNavigate();
@@ -29,25 +36,28 @@ const AccountPin = () => {
         register,
         handleSubmit,
         formState: { errors },
-        reset,
     } = useForm({
         resolver: yupResolver(showGeneratePINForm ? pinSchema : changeSchema),
     });
 
     useEffect(() => {
-        ApiService.checkPinCreated()
-            .then((isPinCreated) => {
-                if (isPinCreated === true) {
-                    setShowGeneratePINForm(false);
-                }
-            })
-            .catch((error) => console.error('Error checking PIN status:', error));
-    }, []);
+        if (accountDetails.pinStatus === REDUX_SLICE_DATA_STATUS.IDLE) {
+            dispatch(checkAccountPin());
+        } else if (accountDetails.pinStatus === REDUX_SLICE_DATA_STATUS.SUCCEEDED) {
+            if (accountDetails.data.hasPin) {
+                setShowGeneratePINForm(false);
+            }
+        } else if (accountDetails.pinStatus === REDUX_SLICE_DATA_STATUS.FAILED) {
+            console.error('Account PIN status checking failed: ' + accountDetails.error);
+            toast.error('Account PIN status checking failed: ' + accountDetails.error);
+        }
+    }, [accountDetails]);
 
     const onGenerateSubmit = async (data) => {
         show('Generating PIN...');
         try {
             await ApiService.createPin(data.newPin, data.password);
+            dispatch(setAccountPinExistence(true));
             toast.success('PIN generated successfully');
             navigate('/dashboard');
         } catch (error) {

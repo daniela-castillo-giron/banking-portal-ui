@@ -1,30 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import ApiService from '../../services/apiService';
 import UserProfileCard from '../userprofilecard/UserProfileCard';
 import AccountDetailCard from '../accountDetailCard/AccountDetailCard';
 import TransactionHistory from '../transactionHistory/TransactionHistory';
 import PinCreationModal from '../pinCreationModal/PinCreationModal';
+import { useDispatch, useSelector } from 'react-redux';
+import { checkAccountPin } from '../../store/accountSlice';
+import { REDUX_SLICE_DATA_STATUS } from '../../utils/constants';
 import './dashboard.css';
 
 const Dashboard = () => {
+    const dispatch = useDispatch();
+
+    const accountDetails = useSelector(state => state.account);
+
     const [showPINCreationModel, setShowPINCreationModel] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
-        checkPINStatus();
-    }, []);
-
-    const checkPINStatus = async () => {
-        try {
-            const isPinCreated = await ApiService.checkPinCreated();
-            if (isPinCreated === false) {
+        if (accountDetails.pinStatus === REDUX_SLICE_DATA_STATUS.IDLE) {
+            dispatch(checkAccountPin());
+        } else if (accountDetails.pinStatus === REDUX_SLICE_DATA_STATUS.SUCCEEDED) {
+            if (accountDetails.data.hasPin === false) {
                 setShowPINCreationModel(true);
             }
-        } catch (error) {
-            console.error('Error checking PIN status:', error);
+        } else if (accountDetails.pinStatus === REDUX_SLICE_DATA_STATUS.FAILED) {
+            console.error('Account PIN status checking failed: ' + accountDetails.error);
         }
-    };
+    }, [accountDetails]);
 
     const redirectToPINCreationPage = () => {
         setShowPINCreationModel(false);
