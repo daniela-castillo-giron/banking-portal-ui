@@ -9,6 +9,7 @@ import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserDetails } from '../../store/userSlice';
 import { getAccountDetails } from '../../store/accountSlice';
+import { getTransactions } from '../../store/transactionsSlice';
 import { REDUX_SLICE_DATA_STATUS } from '../../utils/constants';
 import './withdraw.css';
 
@@ -65,6 +66,7 @@ const Withdraw = () => {
         try {
             const response = await ApiService.withdraw(data.amount, data.pin);
             dispatch(getAccountDetails());
+            dispatch(getTransactions());
             hide();
             toast.success(response.msg || 'Withdrawal successful!');
             reset();

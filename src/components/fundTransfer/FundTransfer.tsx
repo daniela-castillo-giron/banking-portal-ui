@@ -9,6 +9,7 @@ import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserDetails } from '../../store/userSlice';
 import { getAccountDetails } from '../../store/accountSlice';
+import { getTransactions } from '../../store/transactionsSlice';
 import { REDUX_SLICE_DATA_STATUS } from '../../utils/constants';
 import './fundTransfer.css';
 
@@ -62,6 +63,7 @@ const FundTransfer = () => {
         try {
             const response = await ApiService.fundTransfer(data.amount, data.pin, data.targetAccountNumber);
             dispatch(getAccountDetails());
+            dispatch(getTransactions());
             hide();
             toast.success(response.msg || 'Fund transfer successful!');
             reset();

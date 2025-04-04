@@ -4,7 +4,7 @@ import { REDUX_SLICE_DATA_STATUS } from '../utils/constants';
 
 // Async thunk to fetch all transactions
 export const getTransactions = createAsyncThunk(
-    'transaction/getTransactions',
+    'transactions/getTransactions',
     async (_, thunkAPI) => {
         try {
             const response = await ApiService.getTransactions();
@@ -22,8 +22,8 @@ const initialState = {
     error: null,
 };
 
-const transactionSlice = createSlice({
-    name: 'transaction',
+const transactionsSlice = createSlice({
+    name: 'transactions',
     initialState,
     reducers: {
         setTransactions: (state, action) => {
@@ -49,6 +49,6 @@ const transactionSlice = createSlice({
     },
 });
 
-export const { setTransactions, clearTransactions } = transactionSlice.actions;
+export const { setTransactions, clearTransactions } = transactionsSlice.actions;
 
-export default transactionSlice.reducer;
+export default transactionsSlice.reducer;

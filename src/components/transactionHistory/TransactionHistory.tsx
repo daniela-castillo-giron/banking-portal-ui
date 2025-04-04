@@ -6,7 +6,7 @@ import DownloadTransactions from '../downloadTransactions/DownloadTransactions';
 import { getAccountNumberFromToken } from '../transaction/Transaction';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
-import { getTransactions } from '../../store/transactionSlice';
+import { getTransactions } from '../../store/transactionsSlice';
 import { REDUX_SLICE_DATA_STATUS } from '../../utils/constants';
 import './transactionHistory.css';
 
