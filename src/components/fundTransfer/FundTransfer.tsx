@@ -8,6 +8,7 @@ import { useLoader } from '../../services/loaderModalService';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserDetails } from '../../store/userSlice';
+import { getAccountDetails } from '../../store/accountSlice';
 import { REDUX_SLICE_DATA_STATUS } from '../../utils/constants';
 import './fundTransfer.css';
 
@@ -60,6 +61,7 @@ const FundTransfer = () => {
         show('Transferring funds...');
         try {
             const response = await ApiService.fundTransfer(data.amount, data.pin, data.targetAccountNumber);
+            dispatch(getAccountDetails());
             hide();
             toast.success(response.msg || 'Fund transfer successful!');
             reset();
