@@ -18,7 +18,7 @@ const Header = () => {
 
     const logout = async () => {
         try {
-            await axiosService.get(`/users/logout`);
+            await AuthService.logOutUser();
             localStorage.removeItem(authTokenName);
             logoutContext();
             navigate('/');
