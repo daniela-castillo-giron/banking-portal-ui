@@ -40,12 +40,12 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    // if (error.response?.status === 401) {
-    //   console.error('Unauthorized. Redirecting to login...');
-    //   localStorage.removeItem(environment.tokenName);
-    //   toast.error('Unauthorized access. Please log in again.');
-    //   window.location.href = '/login';
-    // }
+    if (error.response?.status === 401 && error.response?.data === 'Full authentication is required to access this resource') {
+      console.error('Unauthorized. Redirecting to login...');
+      localStorage.removeItem(environment.tokenName);
+      toast.error('Unauthorized access. Please log in again.');
+      window.location.href = '/login';
+    }
     return Promise.reject(error);
   }
 );
