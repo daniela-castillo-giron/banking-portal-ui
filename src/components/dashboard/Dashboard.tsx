@@ -29,6 +29,11 @@ const Dashboard = () => {
         navigate('/account/pin');
     };
 
+    // Only render the content if data has loaded successfully
+    if (accountDetails.status === REDUX_SLICE_DATA_STATUS.LOADING) {
+        return null;
+    }
+
     return (
         <div className="coverparentspace">
             <div className="cards-wrapper w-full flex gap-2">

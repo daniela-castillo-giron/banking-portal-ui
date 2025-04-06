@@ -79,6 +79,11 @@ const TransactionHistory = () => {
         if (page >= 1 && page <= totalPages) setCurrentPage(page);
     };
 
+    // Only render the content if data has loaded successfully
+    if (transactions.status === REDUX_SLICE_DATA_STATUS.LOADING) {
+        return null;
+    }
+
     return (
         <div className="coverparentspace">
             <div className="flex gap-5 flex-col">

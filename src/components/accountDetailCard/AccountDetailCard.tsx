@@ -30,6 +30,11 @@ const AccountDetailCard = () => {
         }).format(amount || 0);
     };
 
+    // Only render the content if data has loaded successfully
+    if (accountDetails.status === REDUX_SLICE_DATA_STATUS.LOADING) {
+        return null;
+    }
+
     return (
         <div className="p-4 bg-blue-500 rounded-lg shadow-lg text-white">
             <h2 className="text-3xl font-semibold mb-6 text-yellow-400">

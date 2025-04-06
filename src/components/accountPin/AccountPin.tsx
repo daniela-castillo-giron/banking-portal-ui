@@ -82,6 +82,11 @@ const AccountPin = () => {
         }
     };
 
+    // Only render the content if data has loaded successfully
+    if (accountDetails.status === REDUX_SLICE_DATA_STATUS.LOADING) {
+        return null;
+    }
+
     return (
         <div className="min-h-screen bg-white text-slate-700 flex flex-col items-center py-10 px-4">
             <div className="w-full bg-yellow-100 text-yellow-800 px-4 py-2 text-sm border-b border-yellow-300 text-center rounded">

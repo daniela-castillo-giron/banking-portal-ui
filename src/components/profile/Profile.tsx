@@ -68,7 +68,10 @@ const Profile = () => {
       });
   };
 
-  if (!userProfile) return null;
+    // Only render the content if data has loaded successfully
+  if (userDetails.status === REDUX_SLICE_DATA_STATUS.LOADING) {
+    return null;
+  }
 
   return (
     <div className="min-h-screen bg-white text-slate-700 flex flex-col items-center py-10 px-4">
