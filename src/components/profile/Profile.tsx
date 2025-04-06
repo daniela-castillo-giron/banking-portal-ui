@@ -6,6 +6,7 @@ import authService from '../../services/authService';
 import { toast } from 'react-toastify';
 import Select from 'react-select';
 import { getData } from 'country-list';
+import { useLoader } from '../../services/loaderModalService';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserDetails, setUserDetails } from '../../store/userSlice';
 import { REDUX_SLICE_DATA_STATUS } from '../../utils/constants';
@@ -26,6 +27,7 @@ const Profile = () => {
 
   const [userProfile, setUserProfile] = useState({});
   const [showUpdateForm, setShowUpdateForm] = useState(false);
+  const { show, hide } = useLoader();
 
   const countries = getData().map((country) => ({
     label: `${country.name} (${country.code})`,
@@ -54,21 +56,22 @@ const Profile = () => {
     }
   }, [userDetails]);
 
-  const onSubmit = (data) => {
-    authService
-      .updateUserProfile(data)
-      .then((response) => {
-        dispatch(setUserDetails(response));
-        setShowUpdateForm(false);
-        toast.success('Profile updated successfully');
-      })
-      .catch((error) => {
-        console.error('User details update failed: ' + error);
-        toast.error('User details update failed: ' + (error?.response?.data || 'Something went wrong'));
-      });
+  const onSubmit = async (data) => {
+    try {
+      show('Updating your profile...');
+      const response = await authService.updateUserProfile(data);
+      dispatch(setUserDetails(response));
+      setShowUpdateForm(false);
+      toast.success('Profile updated successfully');
+    } catch (error) {
+      console.error('User details update failed: ' + error);
+      toast.error('User details update failed: ' + (error?.response?.data || 'Something went wrong'));
+    } finally {
+      hide();
+    }
   };
 
-    // Only render the content if data has loaded successfully
+  // Only render the content if data has loaded successfully
   if (userDetails.status === REDUX_SLICE_DATA_STATUS.LOADING) {
     return null;
   }

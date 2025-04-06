@@ -26,16 +26,16 @@ const Login = () => {
         try {
             const response = await AuthService.login(data.identifier, data.password);
             localStorage.setItem(authTokenName, response.token);
-            hideLoader();
             dispatch(clearUserDetails());
             dispatch(clearAccountDetails());
             dispatch(clearTransactions());
             login();
             navigate('/dashboard');
         } catch (error) {
-            hideLoader();
             console.error('Login failed: ' + error);
             toast.error('Login failed: ' + error);
+        } finally {
+            hideLoader();
         }
     };
 

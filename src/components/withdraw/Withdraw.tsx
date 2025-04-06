@@ -67,15 +67,15 @@ const Withdraw = () => {
             const response = await ApiService.withdraw(data.amount, data.pin);
             dispatch(getAccountDetails());
             dispatch(getTransactions());
-            hide();
             toast.success(response.msg || 'Withdrawal successful!');
             reset();
             setResultStatus('success');
         } catch (error) {
-            hide();
             console.error('Withdrawal failed: ' + error);
             toast.error('Withdrawal failed: ' + error);
             setResultStatus('error');
+        } finally {
+            hide();
         }
         setStep(3);
     };

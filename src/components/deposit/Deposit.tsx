@@ -67,15 +67,15 @@ const Deposit = () => {
             const response = await ApiService.deposit(data.amount, data.pin);
             dispatch(getAccountDetails());
             dispatch(getTransactions());
-            hide();
             toast.success(response.msg || 'Deposit successful!');
             reset();
             setResultStatus('success');
         } catch (error) {
-            hide();
             console.error('Deposit failed: ' + error);
             toast.error('Deposit failed: ' + error);
             setResultStatus('error');
+        } finally {
+            hide();
         }
         setStep(3);
     };

@@ -64,15 +64,15 @@ const FundTransfer = () => {
             const response = await ApiService.fundTransfer(data.amount, data.pin, data.targetAccountNumber);
             dispatch(getAccountDetails());
             dispatch(getTransactions());
-            hide();
             toast.success(response.msg || 'Fund transfer successful!');
             reset();
             setResultStatus('success');
         } catch (error) {
-            hide();
             console.error('Fund transfer failed: ' + error);
             toast.error('Fund transfer failed: ' + error);
             setResultStatus('error');
+        } finally {
+            hide();
         }
         setStep(3);
     };
