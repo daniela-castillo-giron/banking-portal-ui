@@ -15,7 +15,8 @@ const Home = () => {
 
     return (
         <>
-            <section className="hero bg-gradient-to-r from-blue-400 via-purple-400 to-pink-500 m-[-0.5rem]">
+            {/* <section className="hero bg-gradient-to-r from-blue-400 via-purple-400 to-pink-500 m-[-0.5rem]"> */}
+            <section className="hero m-[-0.5rem]">
                 <div className="container-fluid">
                     <div className="panel-wrapper">
                         {/* Left Side */}
